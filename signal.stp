@@ -1,0 +1,4 @@
+probe signal.send {
+    printf("%s:%s\n", pid2execname(pid()) ,si_code);
+
+}

@@ -1,0 +1,6 @@
+#! /usr/bin/env stap
+
+probe kernel.statement("hrtimer_init_sleeper") {
+        printf("hrtimer init: %d\n", $task->pid);
+}
+

@@ -1,0 +1,6 @@
+probe kernel.function("add_wait_queue") { 
+    printf("%s[%d] sleeping\n", execname(), pid());
+}
+probe scheduler.wakeup {
+    printf("%s[%d] wakes up %s[%d]\n", execname(), pid(), pid2execname(task_pid), task_pid); 
+}

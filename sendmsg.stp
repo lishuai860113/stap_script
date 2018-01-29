@@ -1,0 +1,17 @@
+#! /usr/bin/env stap
+
+probe kernel.function("sock_sendmsg") {
+        printf("sendmsg:%d:%s\n", gettimeofday_ns(), user_string($msg->msg_iov->iov_base))
+}
+
+probe kernel.function("sock_sendmsg").return {
+        printf("sendret:%d:%s\n", gettimeofday_ns(), user_string($msg->msg_iov->iov_base))
+}
+
+probe kernel.function("sock_recvmsg") {
+            printf("recvmsg:%d:%s\n", gettimeofday_ns(), user_string($msg->msg_iov->iov_base))
+}
+
+probe kernel.function("sock_recvmsg").return {
+            printf("recvret:%d:%s\n", gettimeofday_ns(), user_string($msg->msg_iov->iov_base))
+}

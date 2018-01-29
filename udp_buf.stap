@@ -1,0 +1,5 @@
+#!/usr/bin/env stap
+probe kernel.statement("udp_queue_rcv_skb@net/ipv4/udp.c")
+{
+    printf("rmem_alloc:%d rcv_buf:%d drops:%d\n", @cast(&$sk->sk_backlog->rmem_alloc, "atomic_t", "kernel<linux/types.h>")->counter,  $sk->sk_rcvbuf, @cast(&$sk->sk_drops, "atomic_t", "kernel<linux/types.h>")->counter)
+}

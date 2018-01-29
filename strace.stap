@@ -1,0 +1,7 @@
+#! /usr/bin/env stap
+
+probe syscall.* {
+        if ($1 == pid()){
+                printf("%s:%s:%s\n", execname(), pp(), $$vars)
+        }
+}
