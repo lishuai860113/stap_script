@@ -1,0 +1,11 @@
+probe begin {
+%( $# < 1
+        %? pid = target()
+        %: pid = $1
+%)
+    task = pid2task(pid);
+    printf("%x", task);
+    printf("%s\n", @cast(task, "task_struct", "kernel<linux/sched.h>")->mm$);
+    exit();
+}
+
