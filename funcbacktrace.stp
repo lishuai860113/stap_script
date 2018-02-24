@@ -1,0 +1,8 @@
+#! /usr/bin/env stap
+
+probe kernel.statement(@1){
+        printf("-----------------\n")
+        printf("%s\n", print_backtrace())
+        printf("-----------------\n")
+}
+
