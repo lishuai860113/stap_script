@@ -1,0 +1,34 @@
+#! /usr/bin/env stap
+%{
+#include <linux/version.h>
+#include <net/sock.h>
+#include <net/tcp.h>
+#include <net/ip.h>
+#include <linux/skbuff.h>
+%}
+
+############################################################
+# Dropwatch.stp
+# Author: Neil Horman <nhorman@redhat.com>
+# An example script to mimic the behavior of the dropwatch utility
+# http://fedorahosted.org/dropwatch
+############################################################
+
+# Array to hold the list of drop points we find
+
+
+# Note when we turn the monitor on and off
+probe begin { printf("Monitoring for dropped packets\n") }
+probe end { printf("Stopping dropped packet monitor\n") }
+
+# increment a drop counter for every location we drop at
+probe kernel.statement("kfree_skb") {
+        iphdr = __get_skb_iphdr($skb)
+        family = %{ AF_INET %}
+        saddr = format_ipaddr(__ip_skb_saddr(iphdr), %{ AF_INET %})
+        daddr = format_ipaddr(__ip_skb_daddr(iphdr), %{ AF_INET %})
+        protocol = __ip_skb_proto(iphdr)
+    printf("%s->%s:%d:from %s\n",saddr,daddr,protocol,caller())
+}
+
+# Every 5 seconds report our drop locations
