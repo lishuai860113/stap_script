@@ -7,7 +7,7 @@ probe kernel.statement(@1){
         }
     }
     else{
-        printf("%s\n", $$parms$$)
+        printf("%d:%s\n", pid(), $$parms$$)
     }
 }
 

