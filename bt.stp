@@ -1,0 +1,8 @@
+    probe kernel.function(@1){
+     print("----------------START-------------------------\n")
+      printf("In process [%s]\n", execname())
+      print_regs()
+      print_backtrace()
+      print("----------------END-------------------------\n")
+   }
+
