@@ -1,0 +1,4 @@
+probe netfilter.ip.local_out {
+      if (dport == $1) # or parametrize
+                printf("%s[%d][%d] %s:%d\n", execname(), pid(), tid(), daddr, dport)
+}
