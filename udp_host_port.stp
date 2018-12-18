@@ -1,0 +1,15 @@
+probe udp.sendmsg {
+      if ( dport == $2 ) {
+          if ( daddr == @1 ){
+              printf ("PID %5d (%s) sent UDP to %15s \n", pid(), execname(), daddr);
+                    }
+      }
+}
+
+probe udp.recvmsg {
+    if ( dport == $2 ) {
+      if ( daddr == @1 ) {
+                printf ("PID %5d (%s) recv UDP from %15s \n", pid(), execname(), daddr);
+                    }
+    }
+}

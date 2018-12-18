@@ -1,0 +1,32 @@
+
+probe syscall.chown, syscall.chown16 ?
+{
+        printf("%s, %s\n", name, argstr)
+                printf("%s, %d, %d\n", path, owner, group)
+}
+probe syscall.chown.return, syscall.chown16.return ?
+{
+        printf("%s, %s\n", name, retstr)
+}
+
+probe syscall.fchown, syscall.fchown16 ?
+{
+        printf("%s, %s\n", name, argstr)
+                printf("%s, %d, %d, %d, %d\n", execname(), pid(), fd, owner, group)
+}
+probe syscall.fchown.return, syscall.fchown16.return ?
+{
+        printf("%s, %s\n", name, retstr)
+}
+
+probe syscall.fchownat ?
+{
+        printf("%s, %s\n", name, argstr)
+                printf("%s, %d, %d(%s), %s, %d, %d, %d(%s)\n", execname(), pid(), dirfd, dirfd_str, pathname,
+                                   owner, group, flags, flags_str)
+}
+probe syscall.fchownat.return ?
+{
+        printf("%s, %s\n", name, retstr)
+}
+
