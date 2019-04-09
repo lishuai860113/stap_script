@@ -1,0 +1,21 @@
+probe process.begin
+{
+  if (execname() == @1) {
+           system("echo ===========================")
+           system("date")
+           printf("jiff:%ld  pid:%ld  ppid:%ld  start!\n",jiffies(), pid(), ppid())
+           system("pstree -pa")
+           system("echo ===========================")
+  }
+}
+
+probe process.end
+{
+  if (execname() == @1) {
+           system("echo ===========================")
+           system("date")
+           printf("jiff:%ld  pid:%ld  ppid:%ld end!\n",jiffies(), pid(), ppid())
+           system("pstree -pa")
+           system("echo ===========================")
+  }
+}
