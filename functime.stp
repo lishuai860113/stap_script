@@ -1,0 +1,9 @@
+#! /usr/bin/env stap
+
+probe kernel.function(@1).return{
+        printf("-----------------\n")
+        spend_time = gettimeofday_ns() - @entry(gettimeofday_ns())
+        printf("%s time is : %d\n", @1, spend_time)
+        printf("-----------------\n")
+}
+
