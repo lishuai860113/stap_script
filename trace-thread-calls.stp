@@ -1,0 +1,8 @@
+probe $1.call {  
+            if(pid() == $2)
+                                printf ("%s -> %s\n", thread_indent(1), ppfunc())
+}
+probe $1.return {  
+            if(pid() == $2)
+                                printf ("%s <- %s\n", thread_indent(-1), ppfunc())
+}

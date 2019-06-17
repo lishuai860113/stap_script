@@ -1,0 +1,7 @@
+probe process(@1).function(@2) 
+{
+    printf("%s\n", print_backtrace()); 
+    print_usyms(ubacktrace()); 
+    printf("%s\n", $$parms)
+    printf("=============\n")
+}
